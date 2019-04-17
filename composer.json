@@ -1,0 +1,23 @@
+{
+    "name": "thetarkus/is218-mini-project-2",
+    "description": "CSV Upload",
+    "type": "package",
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {"kaw393939\\": "src/"}
+    },
+    "authors": [
+        {
+            "name": "Keith Williams",
+            "email": "keith@webizly.com"
+        },
+        {
+            "name": "Mike Mob",
+            "email": "mike@mikemob.com"
+        }
+    ],
+    "require": {}
+}
