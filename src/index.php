@@ -1,6 +1,6 @@
 <?php
-    namespace kaw393939;
-    require_once '../vendor/autoload.php';
+namespace kaw393939;
+require_once '../vendor/autoload.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,8 @@
 <body>
     <h1>Upload CSV File</h1>
     <form action="process.php" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" />
+        <input type="file" name="upfile" />
+        <input type="submit" value="Upload" />
     </form>
 </body>
 </html>
