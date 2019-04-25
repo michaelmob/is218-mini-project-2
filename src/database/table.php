@@ -11,16 +11,23 @@ class table {
     }
 
 
+    public static function create(string $name, Array $columns): table {
+        $table = new table($name, $columns);
+        $name = $table->db->quote($name);
 
         $fields = '';
         foreach ($columns as $column) {
-            $fields .= $db->quote($column) . " VARCHAR, ";
+            $fields .= $table->db->quote($column) . " VARCHAR, ";
         }
         $fields = rtrim($fields, ', ');
 
-        $statement = $db->prepare("CREATE TABLE IF NOT EXISTS $name (
+        $statement = $table->db->prepare("CREATE TABLE IF NOT EXISTS $name (
             'id' INTEGER PRIMARY KEY, $fields);");
 
-        return $statement->execute();
+        if ($statement->execute())
+            return $table;
+        
+        return null;
+    }
     }
 }
