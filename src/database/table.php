@@ -29,5 +29,32 @@ class table {
         
         return null;
     }
+
+
+    public function columns() {
+        $result = '';
+        foreach ($this->columns as $column) {
+            $column = $this->db->quote($column);
+            $result .= "$column, ";
+        }
+        return rtrim($result, ', ');
+    }
+
+
+    public function insert(Array $records) {
+        $columnCount = count($this->columns);
+
+        $sql = "INSERT INTO '{$this->name}' ({$this->columns()}) VALUES ";
+        foreach ($records as $record) {
+            $sql .= '(';
+            for ($i = 0; $i < $columnCount; $i++) {
+                $sql .= $this->db->quote($record[$i]) . ", ";
+            }
+            $sql = rtrim($sql, ', ');
+            $sql .= '), ';
+        }
+
+        $sql = rtrim($sql, ', ') . ";";
+        return $this->db->exec($sql);
     }
 }
