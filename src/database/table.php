@@ -4,9 +4,13 @@ use kaw393939\database\database;
 
 
 class table {
-    public static function create(string $name, Array $columns): bool {
-        $db = database::getInstance();
-        $name = $db->quote($name);
+    public function __construct(String $name, Array $columns) {
+        $this->db = database::getInstance();
+        $this->name = $name;
+        $this->columns = $columns;
+    }
+
+
 
         $fields = '';
         foreach ($columns as $column) {
