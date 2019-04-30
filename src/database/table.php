@@ -4,19 +4,57 @@ use kaw393939\database\database;
 
 
 class table {
-    public static function create(string $name, Array $columns): bool {
-        $db = database::getInstance();
-        $name = $db->quote($name);
+    public function __construct(String $name, Array $columns) {
+        $this->db = database::getInstance();
+        $this->name = $name;
+        $this->columns = $columns;
+    }
+
+
+    public static function create(string $name, Array $columns): table {
+        $table = new table($name, $columns);
+        $name = $table->db->quote($name);
 
         $fields = '';
         foreach ($columns as $column) {
-            $fields .= $db->quote($column) . " VARCHAR, ";
+            $fields .= $table->db->quote($column) . " VARCHAR, ";
         }
         $fields = rtrim($fields, ', ');
 
-        $statement = $db->prepare("CREATE TABLE IF NOT EXISTS $name (
+        $statement = $table->db->prepare("CREATE TABLE IF NOT EXISTS $name (
             'id' INTEGER PRIMARY KEY, $fields);");
 
-        return $statement->execute();
+        if ($statement->execute())
+            return $table;
+        
+        return null;
+    }
+
+
+    public function columns() {
+        $result = '';
+        foreach ($this->columns as $column) {
+            $column = $this->db->quote($column);
+            $result .= "$column, ";
+        }
+        return rtrim($result, ', ');
+    }
+
+
+    public function insert(Array $records) {
+        $columnCount = count($this->columns);
+
+        $sql = "INSERT INTO '{$this->name}' ({$this->columns()}) VALUES ";
+        foreach ($records as $record) {
+            $sql .= '(';
+            for ($i = 0; $i < $columnCount; $i++) {
+                $sql .= $this->db->quote($record[$i]) . ", ";
+            }
+            $sql = rtrim($sql, ', ');
+            $sql .= '), ';
+        }
+
+        $sql = rtrim($sql, ', ') . ";";
+        return $this->db->exec($sql);
     }
 }
