@@ -12,7 +12,7 @@ namespace kaw393939\html;
 class table
 {
     public static function table(String $rows) {
-        return '<table>' . $rows . '</table>';
+        return '<table class="table table-striped">' . $rows . '</table>';
     }
 
     public static function th(String $headings) {
@@ -25,5 +25,27 @@ class table
 
     public static function td(String $data) {
         return '<td>' . $data . '</td>';
+    }
+
+    public function fromObjectArray(Array $objects) {
+        $rows = '';
+        $firstField = true;
+
+        foreach ($objects as $object) {
+            $cells = '';
+            $fields = get_object_vars($object);
+            array_shift($fields);
+
+            foreach ($fields as $field) {
+                if ($firstField)
+                    $cells .= table::th($field);
+                else
+                    $cells .= table::td($field);
+            }
+
+            $rows .= table::tr($cells);
+            $firstField = false;
+        }
+        echo table::table($rows);
     }
 }
