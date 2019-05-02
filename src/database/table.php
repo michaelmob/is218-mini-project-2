@@ -13,7 +13,7 @@ class table {
     }
 
 
-    public function columns() {
+    public function columnsAsStringArray() {
         $result = '';
         foreach ($this->columns as $column) {
             $column = $this->db->quote($column);
@@ -45,7 +45,7 @@ class table {
     public function insert(Array $records) {
         $columnCount = count($this->columns);
 
-        $sql = "INSERT INTO '{$this->name}' ({$this->columns()}) VALUES ";
+        $sql = "INSERT INTO '{$this->name}' ({$this->columnsAsStringArray()}) VALUES ";
         foreach ($records as $record) {
             $sql .= '(';
             for ($i = 0; $i < $columnCount; $i++) {
