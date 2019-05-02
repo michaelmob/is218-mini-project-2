@@ -25,7 +25,7 @@ class csvTable
         $table = table::create($tableName, $records[0]);
         if ($table == null)
             return null;
-        $table->insert(array_shift($records));
+        $table->insert($records);
 
         // Create csvTable record
         $sql = 'INSERT INTO csvTables (name, tableName) VALUES (?, ?)';
@@ -40,7 +40,7 @@ class csvTable
      */
     public static function getAll() {
         $db = database::getInstance();
-        $stmt = $db->prepare('SELECT id, name, tableName FROM csvTables;'); 
+        $stmt = $db->prepare('SELECT id, name, tableName FROM csvTables;');
         $stmt->execute();
 
         $result = [];
@@ -57,7 +57,7 @@ class csvTable
      */
     public static function get(int $id) {
         $db = database::getInstance();
-        $stmt = $db->prepare('SELECT name, tableName FROM csvTables WHERE id=? LIMIT 1;'); 
+        $stmt = $db->prepare('SELECT name, tableName FROM csvTables WHERE id=? LIMIT 1;');
         $stmt->execute([$id]);
 
         $row = $stmt->fetch();
@@ -68,5 +68,20 @@ class csvTable
     }
 
 
+    /**
+     * Fetch all records from csvTable's database table.
+     */
+    public function records() {
+        $db = database::getInstance();
+        $stmt = $db->prepare("SELECT * FROM {$db->quote($this->tableName)};");
+        $stmt->execute();
+
+        $result = [];
+        $rows = $stmt->fetchAll();
+        foreach ($rows as $row)
+            $result[] = recordFactory::create($row);
+
+        return $result;
+    }
 
 }
