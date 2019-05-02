@@ -11,9 +11,9 @@ namespace kaw393939\file;
 
 class csvLoad
 {
-    public static function returnArray(String $filePath) :array
+    public static function returnArray(String $filePath): array
     {
-        $file = fopen($filePath,"r");
+        $file = fopen($filePath, 'r');
         $records = array();
 
         while(!feof($file))

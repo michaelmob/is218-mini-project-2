@@ -28,7 +28,7 @@ class table {
 
         $fields = '';
         foreach ($columns as $column) {
-            $fields .= $table->db->quote($column) . " VARCHAR, ";
+            $fields .= $table->db->quote($column) . ' VARCHAR, ';
         }
         $fields = rtrim($fields, ', ');
 
@@ -45,17 +45,17 @@ class table {
     public function insert(Array $records) {
         $columnCount = count($this->columns);
 
-        $sql = "INSERT INTO '{$this->name}' ({$this->columnsAsStringArray()}) VALUES ";
+        $sql = "INSERT INTO {$this->name} ({$this->columnsAsStringArray()}) VALUES ";
         foreach ($records as $record) {
             $sql .= '(';
             for ($i = 0; $i < $columnCount; $i++) {
-                $sql .= $this->db->quote($record[$i]) . ", ";
+                $sql .= $this->db->quote($record[$i]) . ', ';
             }
             $sql = rtrim($sql, ', ');
             $sql .= '), ';
         }
 
-        $sql = rtrim($sql, ', ') . ";";
+        $sql = rtrim($sql, ', ') . ';';
         return $this->db->exec($sql);
     }
 
