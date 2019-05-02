@@ -4,16 +4,27 @@ use kaw393939\database\database;
 
 
 class table {
+
+
     public function __construct(String $name, Array $columns) {
         $this->db = database::getInstance();
-        $this->name = $name;
+        $this->name = $this->db->quote($name);
         $this->columns = $columns;
+    }
+
+
+    public function columns() {
+        $result = '';
+        foreach ($this->columns as $column) {
+            $column = $this->db->quote($column);
+            $result .= "$column, ";
+        }
+        return rtrim($result, ', ');
     }
 
 
     public static function create(string $name, Array $columns): table {
         $table = new table($name, $columns);
-        $name = $table->db->quote($name);
 
         $fields = '';
         foreach ($columns as $column) {
@@ -28,16 +39,6 @@ class table {
             return $table;
         
         return null;
-    }
-
-
-    public function columns() {
-        $result = '';
-        foreach ($this->columns as $column) {
-            $column = $this->db->quote($column);
-            $result .= "$column, ";
-        }
-        return rtrim($result, ', ');
     }
 
 
@@ -57,4 +58,6 @@ class table {
         $sql = rtrim($sql, ', ') . ";";
         return $this->db->exec($sql);
     }
+
+
 }
