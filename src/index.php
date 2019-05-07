@@ -1,6 +1,8 @@
 <?php
 namespace kaw393939;
 require_once '../vendor/autoload.php';
+use kaw393939\models\csvTable;
+use kaw393939\html\unorderedList;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +13,11 @@ require_once '../vendor/autoload.php';
 <body>
 <h1>Upload CSV File</h1>
 <form action="process.php" method="POST" enctype="multipart/form-data">
-    <p>Input file name:</p> <input type="text" name="name"/><br/>
+    <p>Input table name:</p> <input type="text" name="name"/><br/><br/>
     <input type="file" name="upfile" />
     <input type="submit" value="Upload" />
 </form>
+
+<?php unorderedList::fromObjectArray(csvTable::getAll()); ?>
 </body>
 </html>
