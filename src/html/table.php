@@ -27,7 +27,7 @@ class table
         return '<td>' . $data . '</td>';
     }
 
-    public function fromObjectArray(Array $objects) {
+    public static function fromObjectArray(Array $objects) {
         $rows = '';
         $firstField = true;
 
