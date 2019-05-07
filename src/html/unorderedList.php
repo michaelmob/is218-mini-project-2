@@ -14,10 +14,12 @@ class unorderedList
         return '<li>' . $text . '</li>';
     }
 
-    public function fromObjectArray(Array $objects) {
+    public static function fromObjectArray(Array $objects) {
         $items = '';
         foreach ($objects as $object) {
-            $items .= unorderedList::li(link::a("display.php?id={$object->id}", $object->tableName));
+            $items .= unorderedList::li(
+                link::a("display.php?id={$object->id}", $object->tableName)
+            );
         }
         echo unorderedList::ul($items);
     }
